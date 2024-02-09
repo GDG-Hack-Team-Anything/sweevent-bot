@@ -1,15 +1,27 @@
 require('dotenv').config();
-
 const { Client, IntentsBitField } = require('discord.js');
 
 const client = new Client({
-    IntentsBitField: [
-        IntentsBitField.FLAGS.GUILDS,
-        IntentsBitField.FLAGS.GUILD_MESSAGES,
-        IntentsBitField.FLAGS.GUILDS_MEMBERS
-    ]
+  intents: [
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildMembers,
+    IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.MessageContent,
+  ],
+});
+
+client.on('ready', (c) => {
+  console.log(`✅ ${c.user.tag} is online.`);
+});
+
+client.on('messageCreate', (message) => {
+  if (message.author.bot) {
+    return;
+  }
+
+  if (message.content === 'hello') {
+    message.reply('hello');
+  }
 });
 
 client.login(process.env.TOKEN);
-
-// List of all commands
