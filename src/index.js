@@ -11,3 +11,5 @@ const client = new Client({
 });
 
 client.login(process.env.TOKEN);
+
+// List of all commands
