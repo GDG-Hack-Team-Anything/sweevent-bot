@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client, IntentsBitField } = require('discord.js');
 
+
 const client = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
@@ -14,14 +15,41 @@ client.on('ready', (c) => {
   console.log(`✅ ${c.user.tag} is online.`);
 });
 
-client.on('messageCreate', (message) => {
-  if (message.author.bot) {
-    return;
-  }
+client.login(process.env.TOKEN);
 
-  if (message.content === 'hello') {
-    message.reply('hello');
-  }
+//tagMentor
+client.once('ready', async () => {
+    console.log(`Logged in as ${client.user.tag}`);
+
+    try {
+        const guild = await client.guilds.fetch(process.env.GUILD_ID);
+
+        const channel = await guild.channels.fetch(process.env.MENTOR_CLIENT_ID);
+
+        await channel.send(`${mentorUser}, team ${team} called you.`);
+        console.log("Message sent successfully.");
+    } catch (error) {
+        console.error("Error sending message:", error);
+    }
+
+    client.destroy();
 });
 
-client.login(process.env.TOKEN);
+
+//reportProblem
+client.once('ready', async () => {
+    console.log(`Logged in as ${client.user.tag}`);
+
+    try {
+        const guild = await client.guilds.fetch(process.env.GUILD_ID);
+
+        const channel = await guild.channels.fetch(process.env.HR_CLIENT_ID);
+
+        await channel.send(`${team}: ${problem}`);
+        console.log("Message sent successfully.");
+    } catch (error) {
+        console.error("Error sending message:", error);
+    }
+
+    client.destroy();
+});
